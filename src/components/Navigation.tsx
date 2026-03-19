@@ -1,97 +1,72 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/backend";
 
 export default function Navigation() {
-	return (
-		<nav className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
-			<div className="max-w-7xl mx-auto">
-				{/* <h1 className="text-2xl font-bold text-gray-900 mb-4">Work Database</h1> */}
-				<div className="flex gap-2 items-center justify-between flex-wrap">
-					{/* Left side: main navigation */}
-					<div className="flex gap-2">
-						<NavLink
-							to="/contacts"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-						>
-							Контакти
-						</NavLink>
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
-						<NavLink
-							to="/objects"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-						>
-							Об'єкти
-						</NavLink>
+  function handleLogout() {
+    logout();
+    navigate("/about");
+  }
 
-						<NavLink
-							to="/tasks"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-							title="Додаткові задачі"
-						>
-							Дод. задачі
-						</NavLink>
-					</div>
-
-					{/* Right side: about and auth */}
-					<div className="flex gap-2">
-						<NavLink
-							to="/about"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-						>
-							Про додаток
-						</NavLink>
-
-						<NavLink
-							to="/login"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-						>
-							Вхід
-						</NavLink>
-
-						<NavLink
-							to="/register"
-							className={({ isActive }) =>
-								`px-4 py-2 rounded transition-colors text-sm ${
-									isActive
-										? "bg-blue-500 text-white"
-										: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-								}`
-							}
-						>
-							Реєстрація
-						</NavLink>
-					</div>
-				</div>
-			</div>
-		</nav>
-	);
+  return (
+    <nav className="border-b flex items-center gap-0.5 px-2 py-1.5 shrink-0 sticky top-0 z-50 bg-background overflow-x-auto">
+      {isAuthenticated ? (
+        <>
+          <NavLink to="/objects">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Об&apos;єкти</Button>
+            )}
+          </NavLink>
+          <NavLink to="/tasks">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Дод. завд.</Button>
+            )}
+          </NavLink>
+          <NavLink to="/contacts">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Контакти</Button>
+            )}
+          </NavLink>
+          <span className="h-4 w-px bg-border mx-1 shrink-0" />
+        </>
+      ) : (
+        <span className="text-sm italic text-muted-foreground px-2 whitespace-nowrap shrink-0">
+          Увійдіть, щоб перейти до органайзера
+        </span>
+      )}
+      <div className="flex-1 min-w-2 shrink-0" />
+      <NavLink to="/about">
+        {({ isActive }) => (
+          <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Про додаток</Button>
+        )}
+      </NavLink>
+      <span className="h-4 w-px bg-border mx-1 shrink-0" />
+      {isAuthenticated ? (
+        <>
+          <NavLink to="/profile">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Профіль</Button>
+            )}
+          </NavLink>
+          <Button variant="ghost" size="sm" className="whitespace-nowrap shrink-0" onClick={handleLogout}>Вийти</Button>
+        </>
+      ) : (
+        <>
+          <NavLink to="/register">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Реєстрація</Button>
+            )}
+          </NavLink>
+          <NavLink to="/login">
+            {({ isActive }) => (
+              <Button variant={isActive ? "default" : "ghost"} size="sm" className="whitespace-nowrap shrink-0">Увійти</Button>
+            )}
+          </NavLink>
+        </>
+      )}
+    </nav>
+  );
 }
