@@ -9,3 +9,7 @@
 Загальне завдання: розробити клієнтську частину Web-додатку.
 
 Звіт [Google Docs](https://docs.google.com/document/d/1TTpnTnBWJdzHqRpO7DFqUUbKlDMjWYVR8BXl-g1JVws/edit?usp=sharing).
+
+У додатку є вбудований демонстраційний обліковий запис:
+- Email: demo@example.com
+- Пароль: demo
